@@ -29,7 +29,7 @@ class UserManager(BaseUserManager):
 
     def create_user(self, username, email, password=None):
         if not email:
-            raise ValueError('Enter an email address')
+            raise ValueError("Enter an email address!")
         if not username:
             raise ValueError("Username should be provided!")
         elif BlacklistedUsernames.objects.filter(username=username).exists():
@@ -79,8 +79,8 @@ class User(AbstractBaseUser):
         # this only needed for django admin
         return self.is_active and self.is_staff and self.is_superuser
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email"]
 
     objects = UserManager()
 
