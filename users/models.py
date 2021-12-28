@@ -11,6 +11,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from backend.mixins import TimeStampMixin, UUIDMixin
 from commercial.models import Organisation
 
+from django.contrib import auth
 
 class BlacklistedUsernames(models.Model):
     username = models.CharField(max_length=30, unique=True, blank=False)
@@ -79,6 +80,9 @@ class User(AbstractBaseUser):
         # this only needed for django admin
         return self.is_active and self.is_staff and self.is_superuser
 
+    def get_all_permissions(self, obj=None):
+        return _user_get_permissions(self, obj, 'all') 
+
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
 
@@ -90,3 +94,12 @@ class User(AbstractBaseUser):
     class Meta:
         db_table = 'users_user'
 
+
+# A few helper functions for common logic between User and AnonymousUser.
+def _user_get_permissions(user, obj, from_name):
+    permissions = set()
+    name = 'get_%s_permissions' % from_name
+    for backend in auth.get_backends():
+        if hasattr(backend, name):
+            permissions.update(getattr(backend, name)(user, obj))
+    return permissions

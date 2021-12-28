@@ -6,6 +6,7 @@ django-filter==2.4
 django-cors-headers==3.5.0
 django-debug-toolbar==3.2
 django-graphiql-debug-toolbar==0.1.4
+django-jazzmin==2.4.8
 django-notifications-hq==1.6.0
 django-summernote==0.8.11.6
 django-graphql-jwt==0.3.1
@@ -22,6 +23,5 @@ django-polymorphic==3.0.0
 django-treebeard==4.4
 python-dotenv==0.15.0
 psycopg2-binary
-#psycopg2==2.8.5  # https://github.com/psycopg/psycopg2
 -e git+https://github.com/MoveBigRocks/core-utils.git#egg=core-utils
 -e git+https://github.com/MoveBigRocks/entitlements.git#egg=entitlements

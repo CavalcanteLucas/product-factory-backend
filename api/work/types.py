@@ -12,6 +12,10 @@ from talent.models import ProductPerson
 class ExpertiseType(DjangoObjectType):
     class Meta:
         model = Expertise
+    
+class TaskCategoryType(DjangoObjectType):
+    class Meta:
+        model = TaskCategory
 
 class TaskType(DjangoObjectType):
     id = graphene.Int()

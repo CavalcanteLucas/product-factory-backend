@@ -31,6 +31,7 @@ class Capability(MP_Node):
 
     class Meta:
         db_table = 'capability'
+        verbose_name_plural = 'capabilities'
 
     def __str__(self):
         return self.name
@@ -147,7 +148,7 @@ def save_product(sender, instance, created, **kwargs):
             product_data=dict(
                 name=instance.name,
                 slug=instance.slug,
-                owner=instance.get_product_owner().user.username
+                owner=instance.get_product_owner().username
             )
         )
 
@@ -284,7 +285,7 @@ class Task(TimeStampMixin, UUIDMixin):
     status = models.IntegerField(choices=TASK_STATUS, default=0)
     attachment = models.ManyToManyField(Attachment, related_name="task_attachements", blank=True)
     tag = models.ManyToManyField(Tag, related_name="task_tags", blank=True)
-    category = models.OneToOneField(TaskCategory, on_delete=models.CASCADE, related_name="task", 
+    category = models.ForeignKey(TaskCategory, on_delete=models.CASCADE, related_name="task", 
                                     blank=True, null=True, default=None)
     expertise = models.ManyToManyField(Expertise, related_name="task_expertise")
     blocked = models.BooleanField(default=False)
@@ -575,7 +576,6 @@ def save_product_task(sender, instance, created, **kwargs):
 
 class CodeRepository(TimeStampMixin, UUIDMixin):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
-    # task = models.ForeignKey(Task, on_delete=models.CASCADE, blank=True, null=True)
     repository = models.URLField(blank=True, null=True)
     git_owner = models.CharField(max_length=255)
     git_access_token = models.CharField(max_length=65)

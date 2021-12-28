@@ -7,6 +7,7 @@ class TaskClaimAdmin(admin.ModelAdmin):
         'task',
         'person',
         'kind',
+        'created_at',
     )
 
 

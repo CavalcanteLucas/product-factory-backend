@@ -9,7 +9,6 @@ from talent.models import Person, ProductPerson, PersonProfile, Review, PersonSo
 from work.models import Task, Product, Initiative
 from matching.models import TaskDeliveryAttempt, TaskDeliveryAttachment
 
-
 class PersonSocialType(DjangoObjectType):
     class Meta:
         model = PersonSocial
@@ -211,7 +210,8 @@ class PersonTask(DjangoObjectType):
     class Meta:
         model = Task
 
-    skills = graphene.Field(SkillType)
+    category = graphene.Field("api.work.types.TaskCategoryType")
+    expertise = graphene.List("api.work.types.ExpertiseType")
     reviewer_person = graphene.Field(ReviewerType)
     product = graphene.Field(ProductCustomType)
     initiative = graphene.Field(InitiativePersonType)
@@ -222,8 +222,11 @@ class PersonTask(DjangoObjectType):
         days = (datetime.datetime.now() - self.updated_at.replace(tzinfo=None)).days
         return days if days > 0 else 0
 
-    def resolve_skills(self, info):
+    def resolve_category(self, info):
         return self.category
+
+    def resolve_expertise(self, info):
+        return self.expertise.all()
 
     def resolve_product(self, info):
         return self.product
